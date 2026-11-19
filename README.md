@@ -52,8 +52,7 @@ const GAME_CONFIG = {
 You can run the game locally using Node.js with **zero external dependencies**:
 
 ```bash
-npm start
-# OR: node server.js
+node local-server.js
 ```
 
 Then open [http://localhost:3000](http://localhost:3000) in your browser!
