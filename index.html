@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#fab1a0">
+  <title>Jalebi-Fafda Morning Rush — TMKOC Game</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Sleek Centered Mobile Phone Frame -->
+  <div id="gameContainer">
+
+    <!-- Primary Game Canvas -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Confetti Canvas for 500-pt Win Celebration -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- Top HUD Overlay -->
+    <div id="hudOverlay">
+      <div class="hud-top-row">
+        <!-- Score & Best -->
+        <div class="hud-pill hud-score-box">
+          <span style="font-size: 1.1rem;">🥨</span>
+          <span id="hudScore" class="score-badge">0</span>
+          <span id="hudBest" class="best-score-badge">BEST: 0</span>
+        </div>
+
+        <!-- Lives & Mute Button -->
+        <div class="hud-right-box">
+          <div class="hud-pill">
+            <span id="hudLives" class="hud-lives">❤️❤️❤️</span>
+          </div>
+          <button id="muteBtn" class="hud-btn" aria-label="Toggle Mute">🔊</button>
+        </div>
+      </div>
+
+      <!-- 500-Point Target Progress Bar -->
+      <div class="progress-container">
+        <div id="progressBarFill" class="progress-bar-fill"></div>
+        <span id="progressLabel" class="progress-label">GOAL: 500</span>
+      </div>
+
+      <!-- Babita Power-Up Floating Status Ribbon -->
+      <div id="babitaHudBanner">
+        <div>💖 GOOD MORNING BABITA JI! 2x SCORE &amp; SLOW-MO!</div>
+        <div class="babita-timer-bar">
+          <div id="babitaTimerFill" class="babita-timer-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chappal 0.6s Warning Banner -->
+    <div id="chappalWarningBanner">
+      <span>⚠️</span>
+      <span>DHYAN SE! CHAPPAL INCOMING!</span>
+    </div>
+
+    <!-- START SCREEN MODAL -->
+    <div id="startScreen" class="screen-modal">
+      <div class="modal-card">
+        <h1 class="game-title">Jalebi-Fafda<br>Morning Rush</h1>
+        <p class="game-subtitle">Help Jethalal catch his Sunday breakfast in Gokuldham!</p>
+
+        <!-- Compact Visual Item Legend using disk SVGs -->
+        <div class="legend-container">
+          <div class="legend-section-title collect">🟢 Collect &amp; Score:</div>
+          <div class="legend-grid">
+            <div class="legend-item">
+              <div class="legend-icon-wrap">
+                <img src="./photos/jalebi.svg" alt="Jalebi" class="legend-icon">
+              </div>
+              <div class="legend-details">
+                <span class="legend-name">Jalebi</span>
+                <span class="legend-pts pts-plus">+10 Pts</span>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-icon-wrap">
+                <img src="./photos/faluda.svg" alt="Faluda" class="legend-icon">
+              </div>
+              <div class="legend-details">
+                <span class="legend-name">Faluda</span>
+                <span class="legend-pts pts-plus">+15 Pts</span>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-icon-wrap">
+                <!-- Masala Chai Vector Preview -->
+                <svg class="legend-icon-svg" viewBox="0 0 32 32">
+                  <path d="M8 12 L24 12 L20 28 L12 28 Z" fill="#d35400" stroke="#f39c12" stroke-width="1.5"/>
+                  <ellipse cx="16" cy="12" rx="8" ry="2" fill="#fce4cb"/>
+                  <path d="M14 6 Q16 4 15 2 M18 6 Q20 4 19 2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                </svg>
+              </div>
+              <div class="legend-details">
+                <span class="legend-name">Masala Chai</span>
+                <span class="legend-pts pts-plus">+25 Pts</span>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-icon-wrap">
+                <img src="./photos/babita.svg" alt="Babita Ji" class="legend-icon">
+              </div>
+              <div class="legend-details">
+                <span class="legend-name">Babita Ji</span>
+                <span class="legend-pts pts-babita">2x &amp; Slow (6s)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="legend-section-title avoid" style="margin-top: 4px;">🔴 Avoid &amp; Dodge:</div>
+          <div class="legend-grid">
+            <div class="legend-item">
+              <div class="legend-icon-wrap">
+                <!-- Karela Juice Vector Preview -->
+                <svg class="legend-icon-svg" viewBox="0 0 32 32">
+                  <path d="M8 10 L24 10 L21 28 L11 28 Z" fill="#27ae60" stroke="#2ecc71" stroke-width="1.5"/>
+                  <circle cx="23" cy="9" r="4.5" fill="#145a32" stroke="#52be80" stroke-width="1"/>
+                  <path d="M13 5 Q15 3 14 1" stroke="#27ae60" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                </svg>
+              </div>
+              <div class="legend-details">
+                <span class="legend-name">Karela Juice</span>
+                <span class="legend-pts pts-minus">-1 Life</span>
+              </div>
+            </div>
+            <div class="legend-item">
+              <div class="legend-icon-wrap">
+                <img src="./photos/chapal.svg" alt="Chappal" class="legend-icon">
+              </div>
+              <div class="legend-details">
+                <span class="legend-name">Chappal</span>
+                <span class="legend-pts pts-minus">-1 Life</span>
+              </div>
+            </div>
+            <div class="legend-item" style="grid-column: span 2;">
+              <div class="legend-icon-wrap">
+                <!-- Taxi Bill Vector Preview -->
+                <svg class="legend-icon-svg" viewBox="0 0 32 32">
+                  <rect x="4" y="6" width="24" height="20" rx="3" fill="#ffb8b8" stroke="#e84118" stroke-width="1.5"/>
+                  <line x1="8" y1="12" x2="24" y2="12" stroke="#e84118" stroke-width="1.5"/>
+                  <text x="16" y="21" font-size="7" font-weight="bold" fill="#c23616" text-anchor="middle">₹5000</text>
+                </svg>
+              </div>
+              <div class="legend-details">
+                <span class="legend-name">Sundarlal Taxi Bill</span>
+                <span class="legend-pts pts-minus">-30 Pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Big Start Action Button -->
+        <button id="startBtn" class="btn-primary">
+          <span>🚀 START MORNING RUSH</span>
+        </button>
+
+        <p class="controls-hint">
+          📱 <b>Touch:</b> Drag thumb anywhere horizontally<br>
+          💻 <b>Desktop:</b> Left/Right Arrow Keys or A/D
+        </p>
+      </div>
+    </div>
+
+    <!-- 500-POINT FINALE GOKULDHAM NOTICE BOARD MODAL -->
+    <div id="noticeBoardModal" class="screen-modal hidden">
+      <div class="wooden-frame">
+        <div class="parchment-board">
+          <!-- Red pushpins -->
+          <div class="pushpin left"></div>
+          <div class="pushpin right"></div>
+
+          <div class="notice-society-header">Gokuldham Co-Operative Housing Society Ltd.</div>
+          <h2 id="modalNoticeTitle" class="notice-title">GOKULDHAM SOCIETY — SPECIAL NOTICE</h2>
+
+          <!-- Suvichar Board -->
+          <div id="modalSuvichar" class="suvichar-box">
+            "Aaj ka Suvichar: Some people are even sweeter than Sunday morning Jalebi-Fafda."
+          </div>
+
+          <!-- Personal Message Dedication Card -->
+          <div class="personal-note-card">
+            <div id="modalRecipient" class="recipient-salutation">Dear Archana,</div>
+            <div id="modalPersonalMessage" class="personal-message-body">
+              Archana, you bring more sweetness, warmth, and smiles into every single day than a fresh Sunday plate of crispy hot Jalebi-Fafda. Thank you for being so wonderfully special!
+            </div>
+          </div>
+
+          <!-- Signature -->
+          <div id="modalSignedBy" class="notice-signature">
+            — Ekameva Secretary, Aatmaram Tukaram Bhide &amp; All of Gokuldham
+          </div>
+
+          <!-- Actions -->
+          <div class="notice-actions">
+            <button id="continueEndlessBtn" class="btn-primary">
+              <span>🥨 CONTINUE ENDLESS MODE</span>
+            </button>
+            <button id="noticePlayAgainBtn" class="btn-secondary">
+              Play Again From Start
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER MODAL -->
+    <div id="gameOverModal" class="screen-modal hidden">
+      <div class="modal-card">
+        <div class="gameover-image-wrap">
+          <img src="./photos/sad.svg" alt="Sad Jethalal" class="gameover-image">
+        </div>
+        <h2 class="game-title" style="font-size: 1.4rem;">NONSENSE!</h2>
+        <p class="game-subtitle" style="margin-bottom: 8px;">Too much Karela Juice &amp; Chappals!</p>
+
+        <div class="score-summary-grid">
+          <div class="summary-col">
+            <span class="summary-label">Final Score</span>
+            <span id="finalScoreVal" class="summary-value">0</span>
+          </div>
+          <div class="summary-col best">
+            <span class="summary-label">Best Score</span>
+            <span id="bestScoreVal" class="summary-value">0</span>
+          </div>
+        </div>
+
+        <button id="retryBtn" class="btn-primary">
+          <span>🔄 TRY AGAIN</span>
+        </button>
+        <p class="controls-hint" style="margin-top: 10px;">
+          Tip: Masala Chai gives +25 pts and Babita Ji doubles all scores!
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts in dependency order -->
+  <script src="./sprites.js"></script>
+  <script src="./audio.js"></script>
+  <script src="./game.js"></script>
+
+</body>
+</html>
