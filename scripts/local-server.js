@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = 3000;
+const ROOT_DIR = path.resolve(__dirname, '..');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -23,10 +24,9 @@ const server = http.createServer((req, res) => {
       cleanUrl = '/index.html';
     }
 
-    const safePath = path.normalize(path.join(__dirname, cleanUrl));
+    const safePath = path.normalize(path.join(ROOT_DIR, cleanUrl));
 
-    // Security check: ensure path is within directory
-    if (!safePath.startsWith(__dirname)) {
+    if (!safePath.startsWith(ROOT_DIR)) {
       res.writeHead(403, { 'Content-Type': 'text/plain' });
       res.end('403 Forbidden');
       return;
@@ -42,7 +42,6 @@ const server = http.createServer((req, res) => {
       const ext = path.extname(safePath).toLowerCase();
       const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-      // Support Range requests for smooth audio seeking/looping
       const range = req.headers.range;
       if (range && ext === '.mp3') {
         const parts = range.replace(/bytes=/, '').split('-');
